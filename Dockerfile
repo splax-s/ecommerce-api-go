@@ -6,7 +6,11 @@ FROM golang:1.19
 WORKDIR /app
 
 # Download Go modules
-COPY go.mod go.sum ./
+COPY go.mod ./
+
+COPY go.sum ./
+
+
 RUN go mod download
 
 # Copy the source code. Note the slash at the end, as explained in
@@ -14,7 +18,7 @@ RUN go mod download
 COPY *.go ./
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o /ecommerce-go-jwt
+RUN CGO_ENABLED=0 GOOS=linux go run main.go
 
 # Optional:
 # To bind to a TCP port, runtime parameters must be supplied to the docker command.
