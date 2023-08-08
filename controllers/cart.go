@@ -28,6 +28,15 @@ func NewApplication(prodCollection, userCollection *mongo.Collection) *Applicati
 	}
 }
 
+
+// @Summary Add product to cart
+// @Description Add a specific product to the user's cart
+// @Tags Cart
+// @Accept  json
+// @Produce  json
+// @Param product_id query string true "Product ID"
+// @Success 200 {string} string "Successfully added to cart"
+// @Router /addtocart [get]
 func (app *Application) AddToCart() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		productQueryID := c.Query("id")
@@ -59,6 +68,14 @@ func (app *Application) AddToCart() gin.HandlerFunc {
 	}
 }
 
+// @Summary Remove item from cart
+// @Description Remove a specific item from the user's cart
+// @Tags Cart
+// @Accept  json
+// @Produce  json
+// @Param product_id query string true "Product ID"
+// @Success 200 {string} string "Successfully removed from cart"
+// @Router /removeitem [get]
 func (app *Application) RemoveItem() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		productQueryID := c.Query("id")
@@ -92,6 +109,12 @@ func (app *Application) RemoveItem() gin.HandlerFunc {
 	}
 }
 
+// @Summary List items in cart
+// @Description Get a list of all products in the user's cart
+// @Tags Cart
+// @Produce  json
+// @Success 200 {array} models.ProductUser
+// @Router /listcart [get]
 func GetItemFromCart() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user_id := c.Query("id")
@@ -135,6 +158,13 @@ func GetItemFromCart() gin.HandlerFunc {
 	}
 }
 
+// @Summary Checkout cart
+// @Description Buy all items from the cart
+// @Tags Cart
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Order
+// @Router /cartcheckout [get]
 func (app *Application) BuyFromCart() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userQueryID := c.Query("id")
@@ -152,6 +182,14 @@ func (app *Application) BuyFromCart() gin.HandlerFunc {
 	}
 }
 
+// @Summary Instant buy
+// @Description Buy a product instantly
+// @Tags Products
+// @Accept  json
+// @Produce  json
+// @Param product_id query string true "Product ID"
+// @Success 200 {object} models.Order
+// @Router /instantbuy [get]
 func (app *Application) InstantBuy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		UserQueryID := c.Query("userid")

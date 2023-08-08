@@ -14,6 +14,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// @Description Add a new address for the user
+// @Tags Address
+// @Accept  json
+// @Produce  json
+// @Param address body models.Address true "Address details"
+// @Success 200 {object} models.Address
+// @Router /addaddress [post]
 func AddAddress() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user_id := c.Query("id")
@@ -69,6 +76,14 @@ func AddAddress() gin.HandlerFunc {
 	}
 }
 
+// @Summary Edit home address
+// @Description Edit the user's home address
+// @Tags Address
+// @Accept  json
+// @Produce  json
+// @Param address body models.Address true "Address details"
+// @Success 200 {object} models.Address
+// @Router /edithomeaddress [put]
 func EditHomeAddress() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user_id := c.Query("id")
@@ -101,6 +116,14 @@ func EditHomeAddress() gin.HandlerFunc {
 	}
 }
 
+// @Summary Edit work address
+// @Description Edit the user's work address
+// @Tags Address
+// @Accept  json
+// @Produce  json
+// @Param address body models.Address true "Address details"
+// @Success 200 {object} models.Address
+// @Router /editworkaddress [put]
 func EditWorkAddress() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user_id := c.Query("id")
@@ -133,6 +156,14 @@ func EditWorkAddress() gin.HandlerFunc {
 	}
 }
 
+// @Summary Delete an address
+// @Description Delete a specific address
+// @Tags Address
+// @Accept  json
+// @Produce  json
+// @Param address_id query string true "Address ID"
+// @Success 200 {string} string "Address deleted"
+// @Router /deleteaddresses [get]
 func DeleteAddress() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user_id := c.Query("id")

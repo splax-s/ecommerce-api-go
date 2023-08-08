@@ -1,0 +1,408 @@
+basePath: /
+definitions:
+  models.Address:
+    properties:
+      address_id:
+        type: string
+      city_name:
+        type: string
+      house_name:
+        type: string
+      pin_code:
+        type: string
+      street_name:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      discount:
+        type: integer
+      order_ID:
+        type: string
+      order_list:
+        items:
+          $ref: '#/definitions/models.ProductUser'
+        type: array
+      ordered_on:
+        type: string
+      payment_method:
+        $ref: '#/definitions/models.Payment'
+      total_price:
+        type: integer
+    type: object
+  models.Payment:
+    properties:
+      cod:
+        type: boolean
+      digital:
+        type: boolean
+    type: object
+  models.Product:
+    properties:
+      image:
+        type: string
+      price:
+        type: integer
+      product_ID:
+        type: string
+      product_name:
+        type: string
+      rating:
+        type: integer
+    type: object
+  models.ProductUser:
+    properties:
+      image:
+        type: string
+      price:
+        type: integer
+      product_ID:
+        type: string
+      product_name:
+        type: string
+      rating:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      _id:
+        type: string
+      address:
+        items:
+          $ref: '#/definitions/models.Address'
+        type: array
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        maxLength: 30
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 30
+        minLength: 2
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+      password:
+        minLength: 6
+        type: string
+      phone:
+        type: string
+      refresh_Token:
+        type: string
+      token:
+        type: string
+      updtaed_at:
+        type: string
+      user_id:
+        type: string
+      usercart:
+        items:
+          $ref: '#/definitions/models.ProductUser'
+        type: array
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is the API documentation for the Ecommerce Backend.
+  title: Ecommerce Backend API
+  version: "1.0"
+paths:
+  /addaddress:
+    post:
+      consumes:
+      - application/json
+      description: Add a new address for the user
+      parameters:
+      - description: Address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/models.Address'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Address'
+      tags:
+      - Address
+  /addtocart:
+    get:
+      consumes:
+      - application/json
+      description: Add a specific product to the user's cart
+      parameters:
+      - description: Product ID
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully added to cart
+          schema:
+            type: string
+      summary: Add product to cart
+      tags:
+      - Cart
+  /admin/addproduct:
+    post:
+      consumes:
+      - application/json
+      description: Add product details
+      parameters:
+      - description: Product details
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      summary: Add a new product as an admin
+      tags:
+      - Products
+  /cartcheckout:
+    get:
+      consumes:
+      - application/json
+      description: Buy all items from the cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      summary: Checkout cart
+      tags:
+      - Cart
+  /deleteaddresses:
+    get:
+      consumes:
+      - application/json
+      description: Delete a specific address
+      parameters:
+      - description: Address ID
+        in: query
+        name: address_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Address deleted
+          schema:
+            type: string
+      summary: Delete an address
+      tags:
+      - Address
+  /edithomeaddress:
+    put:
+      consumes:
+      - application/json
+      description: Edit the user's home address
+      parameters:
+      - description: Address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/models.Address'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Address'
+      summary: Edit home address
+      tags:
+      - Address
+  /editworkaddress:
+    put:
+      consumes:
+      - application/json
+      description: Edit the user's work address
+      parameters:
+      - description: Address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/models.Address'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Address'
+      summary: Edit work address
+      tags:
+      - Address
+  /instantbuy:
+    get:
+      consumes:
+      - application/json
+      description: Buy a product instantly
+      parameters:
+      - description: Product ID
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+      summary: Instant buy
+      tags:
+      - Products
+  /listcart:
+    get:
+      description: Get a list of all products in the user's cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ProductUser'
+            type: array
+      summary: List items in cart
+      tags:
+      - Cart
+  /removeitem:
+    get:
+      consumes:
+      - application/json
+      description: Remove a specific item from the user's cart
+      parameters:
+      - description: Product ID
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully removed from cart
+          schema:
+            type: string
+      summary: Remove item from cart
+      tags:
+      - Cart
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password
+      parameters:
+      - description: Email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged in
+          schema:
+            type: string
+      summary: User login
+      tags:
+      - Users
+  /users/productview:
+    get:
+      description: Get a list of all available products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+      summary: View all products
+      tags:
+      - Products
+  /users/search:
+    get:
+      consumes:
+      - application/json
+      description: Search products based on a query string
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+      summary: Search products by query
+      tags:
+      - Products
+  /users/signup:
+    post:
+      consumes:
+      - application/json
+      description: Sign up with email and password
+      parameters:
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Sign up a new user
+      tags:
+      - Users
+swagger: "2.0"

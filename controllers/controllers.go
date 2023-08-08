@@ -32,7 +32,7 @@ func HashPassword(password string) string {
 }
 
 func VerifyPassword(userpassword string, givenpassword string) (bool, string) {
-	err := bcrypt.CompareHashAndPassword([]byte(givenpassword), []byte(userpassword))
+	err := bcrypt.CompareHashAndPassword([]byte(userpassword), []byte(givenpassword))
 	valid := true
 	msg := ""
 	if err != nil {
@@ -42,6 +42,15 @@ func VerifyPassword(userpassword string, givenpassword string) (bool, string) {
 	return valid, msg
 }
 
+
+// @Summary Sign up a new user
+// @Description Sign up with email and password
+// @Tags Users
+// @Accept  json
+// @Produce  json
+// @Param user body models.User true "User details"
+// @Success 200 {object} models.User
+// @Router /users/signup [post]
 func SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -100,6 +109,15 @@ func SignUp() gin.HandlerFunc {
 	}
 }
 
+// @Summary User login
+// @Description Login with email and password
+// @Tags Users
+// @Accept  json
+// @Produce  json
+// @Param email query string true "Email"
+// @Param password query string true "Password"
+// @Success 200 {string} string "Successfully logged in"
+// @Router /users/login [post]
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -131,6 +149,14 @@ func Login() gin.HandlerFunc {
 	}
 }
 
+// @Summary Add a new product as an admin
+// @Description Add product details
+// @Tags Products
+// @Accept  json
+// @Produce  json
+// @Param product body models.Product true "Product details"
+// @Success 200 {object} models.Product
+// @Router /admin/addproduct [post]
 func ProductViewerAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -151,6 +177,12 @@ func ProductViewerAdmin() gin.HandlerFunc {
 	}
 }
 
+// @Summary View all products
+// @Description Get a list of all available products
+// @Tags Products
+// @Produce  json
+// @Success 200 {array} models.Product
+// @Router /users/productview [get]
 func SearchProduct() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var productlist []models.Product
@@ -181,6 +213,15 @@ func SearchProduct() gin.HandlerFunc {
 	}
 }
 
+
+// @Summary Search products by query
+// @Description Search products based on a query string
+// @Tags Products
+// @Accept  json
+// @Produce  json
+// @Param query query string true "Search query"
+// @Success 200 {array} models.Product
+// @Router /users/search [get]
 func SearchProductByQuery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var searchproducts []models.Product
